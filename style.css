@@ -1,0 +1,248 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@700&display=swap');
+
+:root {
+  --strong-cyan: hsl(172, 67%, 45%);
+  --very-dark-cyan: hsl(183, 100%, 15%);
+  --dark-grayish-cyan: hsl(186, 14%, 43%);
+  --grayish-cyan: hsl(184, 14%, 56%);
+  --light-grayish-cyan: hsl(185, 41%, 84%);
+  --very-light-grayish-cyan: hsl(189, 41%, 97%);
+  --white: hsl(0, 0%, 100%);
+}
+
+* {
+  box-sizing: border-box;
+  font-family: inherit;
+  font-weight: bold;
+}
+
+/* MOBILE DESIGN */
+body {
+  position: relative;
+  font-family: 'Space Mono', monospace;
+  background-color: var(--light-grayish-cyan);
+  min-height: 100vh;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
+.logo {
+  display: block;
+  margin: 2rem auto;
+}
+
+.app {
+  background-color: var(--white);
+  border-radius: 20px;
+  padding: 1.6rem;
+}
+
+.section {
+  margin-bottom: 1.5rem;
+}
+
+.label__wrapper {
+  display: flex;
+  margin-bottom: 0.6rem;
+}
+
+.label {
+  margin: 0;
+  color: var(--grayish-cyan);
+}
+
+.label__error {
+  margin: 0;
+  margin-left: auto;
+  color: hsl(0, 81%, 69%);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.input__wrapper {
+  border-radius: 6px;
+  background-color: var(--very-light-grayish-cyan);
+  display: grid;
+  grid-template-columns: 50px 1fr;
+  margin-bottom: 0.6rem;
+  cursor: pointer;
+  outline: 3px solid var(--very-light-grayish-cyan);
+  transition: outline 0.3s;
+}
+
+.icon {
+  margin: auto;
+}
+
+.number__input {
+  width: 100%;
+  background-color: transparent;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  color: var(--very-dark-cyan);
+  text-align: right;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.number__input::placeholder {
+  color: var(--grayish-cyan);
+}
+
+.number__input:focus-visible {
+  outline: none;
+}
+
+.btn__group {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+  margin-top: 1rem;
+}
+
+.btn {
+  border: none;
+  padding: 0.6rem;
+  border-radius: 6px;
+  min-width: 7.7rem;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.btn--tip {
+  font-size: 1.4rem;
+  background-color: var(--very-dark-cyan);
+  color: var(--white);
+}
+
+.btn--tip:focus-visible {
+  outline: none;
+}
+
+.input--custom {
+  background-color: var(--very-light-grayish-cyan);
+  color: var(--very-dark-cyan);
+  font-size: 1.4rem;
+  text-align: right;
+  width: 100%;
+  outline: 3px solid var(--very-light-grayish-cyan);
+}
+
+.input--custom::placeholder {
+  color: var(--grayish-cyan);
+  text-align: center;
+}
+
+.section__result {
+  background-color: var(--very-dark-cyan);
+  border-radius: 14px;
+  padding: 1.4rem;
+  margin: 0;
+}
+
+.tip__amount {
+  margin-top: 0.8rem;
+}
+
+.tip__amount,
+.total__amount {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.6rem;
+}
+
+.amount__label {
+  color: var(--white);
+  margin: 0;
+  margin-bottom: -0.2rem;
+}
+
+.amount__label--small {
+  color: var(--grayish-cyan);
+  font-size: 0.8rem;
+}
+
+.amount__value {
+  color: var(--strong-cyan);
+  font-size: 2.6rem;
+  margin: 0;
+}
+
+.btn--reset {
+  background-color: hsl(183, 96%, 22%);
+  color: hsl(183, 96%, 19%);
+  text-transform: uppercase;
+  width: 100%;
+  font-size: 1.2rem;
+  transition-timing-function: ease-in;
+}
+
+/* DESKTOP DESIGN */
+@media (min-width: 62.5rem) {
+  body {
+    display: block;
+  }
+
+  .app {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: 2rem;
+    row-gap: 1.2rem;
+  }
+
+  .section {
+    margin: 0;
+  }
+
+  .btn__group {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .section__result {
+    display: flex;
+    flex-direction: column;
+    grid-column: 2;
+    grid-row: 1 / span 3;
+    padding: 2rem;
+    min-width: 24.4rem;
+  }
+
+  .btn--reset {
+    margin-top: auto;
+  }
+}
+
+/* NOTE: These classes are added with javascript */
+.tip__selected,
+.reset__enabled {
+  background-color: var(--strong-cyan);
+  color: var(--very-dark-cyan);
+}
+
+.tip__hovered,
+.reset__hovered {
+  background-color: hsl(172, 67%, 71%);
+  color: var(--very-dark-cyan);
+}
+
+.input__wrapper__hovered,
+.input__wrapper__focused {
+  outline-color: hsl(172, 67%, 71%);
+}
+
+.input--custom__hovered,
+.input--custom__focused {
+  outline-color: hsl(172, 67%, 71%);
+  background-color: var(--white);
+}
+
+.error {
+  outline-color: hsl(0, 69%, 72%);
+}
