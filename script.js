@@ -37,7 +37,9 @@ const validateData = function () {
     if (ppl === '0') addError('ppl');
     disableSectionResult();
   } else {
-    clearError();
+    clearError('bill');
+    clearError('tip');
+    clearError('ppl');
     calcDisplayAmounts(Number(bill), Number(tip), Number(ppl));
     btnReset.classList.add('reset__enabled');
   }
