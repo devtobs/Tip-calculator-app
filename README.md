@@ -7,7 +7,7 @@
 
 ### Link
 
-- Live Site URL: [tip-calculator-app](https://your-live-site-url.com)
+- Live Site URL: [tip-calculator-app](https://devtobs.github.io/Tip-calculator-app/)
 
 ### Built with
 
