@@ -33,10 +33,19 @@ const validateData = function () {
     if (tip === '') clearError('tip');
     if (ppl === '') clearError('ppl');
     disableSectionResult();
-  } else if (bill === '0' || tip === '0' || ppl === '0') {
-    if (bill === '0') addError('bill');
-    if (tip === '0') addError('tip');
-    if (ppl === '0') addError('ppl');
+  } else if (
+    bill === '0' ||
+    tip === '0' ||
+    ppl === '0' ||
+    bill.startsWith('-') ||
+    tip.startsWith('-') ||
+    ppl.startsWith('-')
+  ) {
+    bill === '0' || bill.startsWith('-')
+      ? addError('bill')
+      : clearError('bill');
+    tip === '0' || tip.startsWith('-') ? addError('tip') : clearError('tip');
+    ppl === '0' || ppl.startsWith('-') ? addError('ppl') : clearError('ppl');
     disableSectionResult();
   } else {
     clearError('all');
