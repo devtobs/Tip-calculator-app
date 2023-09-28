@@ -10,6 +10,9 @@ const btnReset = document.querySelector('.btn--reset');
 const labelErrorBill = document.querySelector('.label__error--bill');
 const labelErrorPeople = document.querySelector('.label__error--ppl');
 
+const labelWrapperBill = document.querySelector('.label__wrapper--bill');
+const labelWrapperPeople = document.querySelector('.label__wrapper--ppl');
+
 const inputWrapperBill = document.querySelector('.input__wrapper--bill');
 const inputWrapperPeople = document.querySelector('.input__wrapper--ppl');
 
@@ -23,42 +26,14 @@ const amountTotal = document.querySelector('.amount__value--total');
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 
-// Functions and Variables
-let bill, tip, ppl;
-
-const validateData = function () {
-  // Checking if all required data have been inputed
-  if (bill === '' || tip === '' || ppl === '') {
-    if (bill === '') clearError('bill');
-    if (tip === '') clearError('tip');
-    if (ppl === '') clearError('ppl');
-    disableSectionResult();
-  } else if (
-    bill === '0' ||
-    tip === '0' ||
-    ppl === '0' ||
-    bill.startsWith('-') ||
-    tip.startsWith('-') ||
-    ppl.startsWith('-')
-  ) {
-    bill === '0' || bill.startsWith('-')
-      ? addError('bill')
-      : clearError('bill');
-    tip === '0' || tip.startsWith('-') ? addError('tip') : clearError('tip');
-    ppl === '0' || ppl.startsWith('-') ? addError('ppl') : clearError('ppl');
-    disableSectionResult();
-  } else {
-    clearError('all');
-    calcDisplayAmounts(Number(bill), Number(tip), Number(ppl));
-    btnReset.classList.add('reset__enabled');
-  }
-};
+// Global variables and functions
+let billStr, tipStr, pplStr;
 
 const init = function () {
-  // Setting variables to original values
-  bill = '';
-  tip = '';
-  ppl = '';
+  // Setting global variables to original values
+  billStr = '';
+  tipStr = '';
+  pplStr = '';
 
   // Setting DOM elements to default states
   tipBtns.forEach(btn => btn.classList.remove('tip__selected'));
@@ -71,45 +46,132 @@ const init = function () {
   amountTotal.textContent = '$0.00';
 };
 
-const addError = function (label) {
-  // Checking which element to add ERROR state to
-  if (label === 'bill') {
-    labelErrorBill.style.opacity = '1';
-    inputWrapperBill.classList.add('error');
+const validateData = function (billStr, tipStr, pplStr) {
+  // Converting string to number
+  const bill = Number(billStr);
+  const tip = Number(tipStr);
+  const ppl = Number(pplStr);
+
+  // Checking if any input field is empty
+  if (billStr === '' || tipStr === '' || pplStr === '') {
+    if (billStr === '') {
+      removeErrorMsg('billInput');
+      clearError('billInput');
+    }
+    if (tipStr === '') clearError('tipInput');
+    if (pplStr === '') {
+      removeErrorMsg('pplInput');
+      clearError('pplInput');
+    }
+    disableSectionResult();
   }
-  if (label === 'tip') {
-    inputCustom.classList.add('error');
+
+  // Checking if any input field is set to zero
+  if (
+    billStr !== '' &&
+    tipStr !== '' &&
+    pplStr !== '' &&
+    (billStr === '0' || tipStr === '0' || pplStr === '0')
+  ) {
+    if (billStr === '0') {
+      insertErrorMsg(`Can't be zero`, 'billInput');
+      addError('billInput');
+    }
+    if (tipStr === '0') addError('tipInput');
+    if (pplStr === '0') {
+      insertErrorMsg(`Can't be zero`, 'pplInput');
+      addError('pplInput');
+    }
+    disableSectionResult();
   }
-  if (label === 'ppl') {
-    labelErrorPeople.style.opacity = '1';
-    inputWrapperPeople.classList.add('error');
+
+  // Checking if any input field is set to a negative value
+  if (bill < 0 || tip < 0 || ppl < 0) {
+    if (bill < 0) {
+      insertErrorMsg(`Can't be negative`, 'billInput');
+      addError('billInput');
+    }
+    if (tip < 0) addError('tipInput');
+    if (ppl < 0) {
+      insertErrorMsg(`Can't be negative`, 'pplInput');
+      addError('pplInput');
+    }
+  }
+
+  // Checking if any input field is set to an accepted value
+  if (bill > 0 || tip > 0 || ppl > 0) {
+    if (bill > 0) {
+      removeErrorMsg('billInput');
+      clearError('billInput');
+    }
+    if (tip > 0) clearError('tipInput');
+    if (ppl > 0) {
+      removeErrorMsg('pplInput');
+      clearError('pplInput');
+    }
+  }
+
+  // Checking if right conditions are met
+  if (bill > 0 && tip > 0 && ppl > 0) {
+    calcDisplayAmounts(bill, tip, ppl);
+    btnReset.classList.add('reset__enabled');
   }
 };
 
-const clearError = function (label) {
+const insertErrorMsg = function (msg, element) {
+  if (element === 'billInput') {
+    labelWrapperBill.innerHTML = '';
+    const html = `
+    <p class="label">Bill</p>
+    <p class="label__error label__error--bill">${msg}</p>
+      `;
+    labelWrapperBill.insertAdjacentHTML('afterbegin', html);
+  }
+
+  if (element === 'pplInput') {
+    labelWrapperPeople.innerHTML = '';
+    const html = `
+    <p class="label">Number of People</p>
+    <p class="label__error label__error--ppl">${msg}</p>
+      `;
+    labelWrapperPeople.insertAdjacentHTML('afterbegin', html);
+  }
+};
+
+const removeErrorMsg = function (element) {
+  if (element === 'billInput') {
+    labelWrapperBill.innerHTML = '';
+    const html = `
+    <p class="label">Bill</p>
+      `;
+    labelWrapperBill.insertAdjacentHTML('afterbegin', html);
+  }
+
+  if (element === 'pplInput') {
+    labelWrapperPeople.innerHTML = '';
+    const html = `
+    <p class="label">Number of People</p>
+      `;
+    labelWrapperPeople.insertAdjacentHTML('afterbegin', html);
+  }
+};
+
+const addError = function (element) {
+  // Checking which element to add ERROR state to
+  if (element === 'billInput') inputWrapperBill.classList.add('error');
+  if (element === 'tipInput') inputCustom.classList.add('error');
+  if (element === 'pplInput') inputWrapperPeople.classList.add('error');
+};
+
+const clearError = function (element) {
   // Checking which element to remove ERROR state from
-  if (label === 'all') {
-    labelErrorBill.style.opacity = '0';
-    inputWrapperBill.classList.remove('error');
-    inputCustom.classList.remove('error');
-    labelErrorPeople.style.opacity = '0';
-    inputWrapperPeople.classList.remove('error');
-  }
-  if (label === 'bill') {
-    labelErrorBill.style.opacity = '0';
-    inputWrapperBill.classList.remove('error');
-  }
-  if (label === 'tip') {
-    inputCustom.classList.remove('error');
-  }
-  if (label === 'ppl') {
-    labelErrorPeople.style.opacity = '0';
-    inputWrapperPeople.classList.remove('error');
-  }
+  if (element === 'billInput') inputWrapperBill.classList.remove('error');
+  if (element === 'tipInput') inputCustom.classList.remove('error');
+  if (element === 'pplInput') inputWrapperPeople.classList.remove('error');
 };
 
 const disableSectionResult = function () {
-  // Setting only result section to default state
+  // Setting result section to default state
   btnReset.classList.remove('reset__enabled');
   amountTip.textContent = '$0.00';
   amountTotal.textContent = '$0.00';
@@ -132,8 +194,8 @@ init();
 
 // Event listeners for BILL INPUT
 inputBill.addEventListener('input', function () {
-  bill = inputBill.value;
-  validateData();
+  billStr = inputBill.value;
+  validateData(billStr, tipStr, pplStr);
 });
 
 inputBill.addEventListener('mouseover', function () {
@@ -162,14 +224,14 @@ tipBtns.forEach(function (btn) {
   btn.addEventListener('click', function () {
     if (btn.classList.contains('tip__selected')) {
       btn.classList.remove('tip__selected');
-      tip = '';
-      validateData();
+      tipStr = '';
+      validateData(billStr, tipStr, pplStr);
     } else if (inputCustom.value === '') {
       tipBtns.forEach(btn => btn.classList.remove('tip__selected'));
       btn.classList.remove('tip__hovered');
       btn.classList.add('tip__selected');
-      tip = btn.value;
-      validateData();
+      tipStr = btn.value;
+      validateData(billStr, tipStr, pplStr);
     }
   });
 
@@ -189,8 +251,8 @@ tipBtns.forEach(function (btn) {
 // Event listeners for CUSTOM TIP INPUT
 inputCustom.addEventListener('input', function () {
   tipBtns.forEach(btn => btn.classList.remove('tip__selected'));
-  tip = inputCustom.value;
-  validateData();
+  tipStr = inputCustom.value;
+  validateData(billStr, tipStr, pplStr);
 });
 
 inputCustom.addEventListener('mouseover', function () {
@@ -216,8 +278,8 @@ inputCustom.addEventListener('blur', function () {
 
 // Event listeners for NO. OF PEOPLE INPUT
 inputPeople.addEventListener('input', function () {
-  ppl = inputPeople.value;
-  validateData();
+  pplStr = inputPeople.value;
+  validateData(billStr, tipStr, pplStr);
 });
 
 inputPeople.addEventListener('mouseover', function () {

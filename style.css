@@ -53,14 +53,6 @@ body {
   color: var(--grayish-cyan);
 }
 
-.label__error {
-  margin: 0;
-  margin-left: auto;
-  color: hsl(0, 81%, 69%);
-  opacity: 0;
-  transition: opacity 0.3s;
-}
-
 .input__wrapper {
   border-radius: 6px;
   background-color: var(--very-light-grayish-cyan);
@@ -241,6 +233,13 @@ body {
 .input--custom__focused {
   outline-color: hsl(172, 67%, 71%);
   background-color: var(--white);
+}
+
+.label__error {
+  margin: 0;
+  margin-left: auto;
+  color: hsl(0, 81%, 69%);
+  transition: opacity 0.3s;
 }
 
 .error {
