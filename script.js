@@ -29,7 +29,9 @@ let bill, tip, ppl;
 const validateData = function () {
   // Checking if all required data have been inputed
   if (bill === '' || tip === '' || ppl === '') {
-    clearError();
+    if (bill === '') clearError('bill');
+    if (tip === '') clearError('tip');
+    if (ppl === '') clearError('ppl');
     disableSectionResult();
   } else if (bill === '0' || tip === '0' || ppl === '0') {
     if (bill === '0') addError('bill');
@@ -37,9 +39,7 @@ const validateData = function () {
     if (ppl === '0') addError('ppl');
     disableSectionResult();
   } else {
-    clearError('bill');
-    clearError('tip');
-    clearError('ppl');
+    clearError('all');
     calcDisplayAmounts(Number(bill), Number(tip), Number(ppl));
     btnReset.classList.add('reset__enabled');
   }
@@ -79,6 +79,13 @@ const addError = function (label) {
 
 const clearError = function (label) {
   // Checking which element to remove ERROR state from
+  if (label === 'all') {
+    labelErrorBill.style.opacity = '0';
+    inputWrapperBill.classList.remove('error');
+    inputCustom.classList.remove('error');
+    labelErrorPeople.style.opacity = '0';
+    inputWrapperPeople.classList.remove('error');
+  }
   if (label === 'bill') {
     labelErrorBill.style.opacity = '0';
     inputWrapperBill.classList.remove('error');
